@@ -91,6 +91,8 @@ FACE-MASK-DETECTOR-PROJECT/
 - pip (Python package manager)
 - Webcam (for real-time detection)
 
+
+dataset link - https://www.kaggle.com/datasets/omkargurav/face-mask-dataset
 ### Installation
 
 1. **Clone the repository**
