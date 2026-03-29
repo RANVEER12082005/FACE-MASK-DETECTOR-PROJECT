@@ -1,6 +1,7 @@
-# 😷 Face Mask Detector
+# 😷🛡️ MaskGuard AI — Face Mask Detector
 
-Real-time face mask detection using MobileNetV2, OpenCV, and TensorFlow/Keras — classifies masked vs. unmasked faces from webcam feed or static images, with a built-in analytics dashboard.
+A real-time face mask detection system built with MobileNetV2, OpenCV, and Streamlit.
+Classifies masked vs. unmasked faces via live webcam or image upload — wrapped in a polished web UI.
 <img width="1440" height="810" alt="Screenshot 2026-03-28 at 1 49 20 PM" src="https://github.com/user-attachments/assets/f22a1447-dfcf-418e-8b14-f414b79465c5" />
 <img width="1440" height="808" alt="Screenshot 2026-03-28 at 1 49 29 PM" src="https://github.com/user-attachments/assets/fb6d86d4-c7f9-4546-966c-d8326514ed40" />
 <img width="1440" height="805" alt="Screenshot 2026-03-28 at 1 49 36 PM" src="https://github.com/user-attachments/assets/704926e5-4169-455a-8bb1-39ef26ddb77e" />
@@ -10,172 +11,178 @@ Real-time face mask detection using MobileNetV2, OpenCV, and TensorFlow/Keras �
 
 📌 Table of Contents
 
-About the Project
+Overview
 Features
 Tech Stack
 Project Structure
 Prerequisites
-Installation & Setup
-Downloading Required Files
-Usage
-Model Training
-Results
-Known Issues & Troubleshooting
+Setup & Installation
+Downloading Required External Files
+Running the App
+Training the Model
+Model Architecture & Results
+Troubleshooting
 Author
 License
 
 
-📖 About the Project
-The Face Mask Detector is a deep learning-powered computer vision system that automatically detects whether a person is wearing a face mask or not — in real time.
-It uses Transfer Learning with MobileNetV2 as the base model (pre-trained on ImageNet), with custom classification layers added on top and fine-tuned on a labelled dataset of masked and unmasked faces. Face localization is handled by OpenCV's DNN module using a Caffe-based SSD model before passing detected faces to the mask classifier.
-The project includes multiple interfaces — webcam-based live detection, static image upload detection, and an analytics dashboard.
+🔍 Overview
+MaskGuard AI is a deep learning computer vision project that detects whether a person is wearing a face mask in real time. It uses transfer learning on top of MobileNetV2 (pretrained on ImageNet), fine-tuned on a dataset of 7,553 labelled face images.
+The entire application is served through a Streamlit web interface with four pages:
+
+A landing home page with project info and model stats
+A live webcam detection page
+An image upload detection page
+An analytics dashboard showing training curves and dataset statistics
+
+Face localisation before classification is handled by OpenCV's Haar Cascade face detector.
 
 ✨ Features
 
-🎥 Real-time webcam detection with bounding boxes and confidence scores
-🖼️ Static image upload detection via image_upload.py
-📊 Analytics dashboard (dashboard.py) for monitoring detection stats
-🟢 Green bounding box → Mask detected
-🔴 Red bounding box → No mask detected
-🧠 MobileNetV2 transfer learning for high accuracy with a lightweight model
-⚡ Command-line executable — no GUI setup required
+🎥 Live webcam detection — real-time bounding boxes with Mask / No Mask labels and confidence scores
+🖼️ Image upload detection — upload any JPG or PNG and get instant results
+📊 Analytics dashboard — training accuracy/loss curves, dataset distribution charts, and full model architecture breakdown
+🧠 MobileNetV2 transfer learning — high accuracy with a lightweight, deployment-ready model (~2.4M parameters)
+🌐 Streamlit web UI — fully browser-based, no GUI toolkit required
+⚡ Command-line runnable — single command to launch the full app
 
 
-🛠️ Tech Stack
-LibraryVersionPurposePython3.7+Core languageTensorFlow / Keras2.xModel building & trainingMobileNetV2—Pre-trained backbone (transfer learning)OpenCV (opencv-python)4.xImage processing & face detectionNumPy—Numerical operationsMatplotlib—Training accuracy/loss plotsscikit-learn—Model evaluation metricsimutils—Image utility functions
+<img width="600" height="460" alt="image" src="https://github.com/user-attachments/assets/8cefe600-0d5f-417d-aa13-cccbb46fe971" />
 
-📁 Project Structure
-FACE-MASK-DETECTOR-PROJECT/
-│
-├── dataset/
-│   ├── with_mask/              # Images of people wearing masks
-│   └── without_mask/           # Images of people not wearing masks
-│
-├── face_detector/              # ⚠️ Must be downloaded separately (see below)
-│   ├── deploy.prototxt         # Caffe model architecture config
-│   └── res10_300x300_ssd_iter_140000.caffemodel  # Pre-trained face detector weights
-│
-├── models/                     # Saved trained mask detector models
-│
-├── train_mask_detector.py      # Train the MobileNetV2 mask classifier
-├── detect_mask_video.py        # Real-time webcam mask detection
-├── webcam_detection.py         # Alternate webcam detection script
-├── image_upload.py             # Static image mask detection
-├── app.py                      # Main application entry point
-├── dashboard.py                # Analytics dashboard
-├── model_utils.py              # Shared model loading utilities
-├── requirements.txt            # Python dependencies
-└── README.md
+<img width="601" height="618" alt="image" src="https://github.com/user-attachments/assets/be305699-4937-4faa-b9a8-cdb46fa34a1a" />
+
+Note: A face_detector/ folder with Caffe SSD model files is required for detect_mask_video.py.
+The main Streamlit app (app.py) uses OpenCV's Haar Cascade which is bundled with opencv-python and requires no separate download.
+
 
 ✅ Prerequisites
-Before you begin, ensure you have the following installed on your system:
+Ensure the following are installed on your machine before proceeding:
 
-Python 3.7 or higher — Download Python
-pip (comes with Python)
-Git — Download Git
-A working webcam (only required for real-time detection scripts)
+Python 3.7 or higher — Download
+pip — comes bundled with Python
+Git — Download
+A webcam — only needed for the Live Webcam detection page
 
-Verify your Python version:
-bashpython --version
-# or
-python3 --version
+Check your Python version:
+python --version
+# Expected: Python 3.7.x or higher
 
-🚀 Installation & Setup
-Follow these steps exactly to set up and run the project from scratch.
-Step 1 — Clone the Repository
-bashgit clone https://github.com/RANVEER12082005/FACE-MASK-DETECTOR-PROJECT.git
+🚀 Setup & Installation
+Follow every step in order. Do not skip steps.
+Step 1 — Clone the repository
+
+git clone https://github.com/RANVEER12082005/FACE-MASK-DETECTOR-PROJECT.git
 cd FACE-MASK-DETECTOR-PROJECT
-Step 2 — Create a Virtual Environment (Recommended)
-Using a virtual environment keeps dependencies isolated and avoids version conflicts.
-bash# Create the virtual environment
+
+Step 2 — Create a virtual environment
+This keeps the project's dependencies isolated from your system Python.
+# Create the environment
 python -m venv venv
 
 # Activate it
-# On macOS/Linux:
+# macOS / Linux:
 source venv/bin/activate
 
-# On Windows:
-venv\Scripts\activate
-You should now see (venv) in your terminal prompt.
-Step 3 — Install Dependencies
-bashpip install tensorflow opencv-python numpy matplotlib scikit-learn imutils
+# Windows (Command Prompt):
+venv\Scripts\activate.bat
 
-Note: If requirements.txt is populated in a future update, you can alternatively run:
-bashpip install -r requirements.txt
+# Windows (PowerShell):
+venv\Scripts\Activate.ps1
 
+You should see (venv) at the start of your terminal prompt. Keep this active for all remaining steps.
 
-📥 Downloading Required Files
-The project needs two additional resources that are not stored in this repository due to file size:
-1. Face Detector Model (Caffe SSD)
-The OpenCV face detector requires two files. Download them and place them inside a folder named face_detector/ at the project root.
-bashmkdir face_detector
-Download the files:
+step 3 — Install dependencies
+pip install tensorflow opencv-python streamlit numpy matplotlib scikit-learn imutils
 
-deploy.prototxt
-res10_300x300_ssd_iter_140000.caffemodel
+If requirements.txt has been populated, you can alternatively run:
+pip install -r requirements.txt
 
-Place both files inside face_detector/. Your structure should look like:
-face_detector/
-├── deploy.prototxt
-└── res10_300x300_ssd_iter_140000.caffemodel
-2. Training Dataset
-Download the face mask dataset from Kaggle:
+Installation takes 2–5 minutes depending on your internet speed (TensorFlow is ~500MB).
+
+📥 Downloading Required External Files
+Dataset (required to train the model)
+Download the face mask image dataset from Kaggle:
 👉 Face Mask Dataset — Kaggle
-After downloading, extract and place images into:
+After downloading, extract the archive and place images into the correct folders:
 dataset/
-├── with_mask/       ← paste masked face images here
-└── without_mask/    ← paste unmasked face images here
+├── with_mask/        ← paste all masked-face images here
+└── without_mask/     ← paste all unmasked-face images here
 
-🧪 Usage
-All scripts are run from the terminal inside the project root directory. Make sure your virtual environment is activated.
-1. Train the Mask Detector Model
-Run this first if you don't have a pre-trained model saved in models/:
-bashpython train_mask_detector.py --dataset dataset
-This will train the MobileNetV2 model and save the output to the models/ directory. A training accuracy/loss graph (plot.png) will also be generated.
+If you already have a pre-trained model saved in models/, you can skip the dataset download and go straight to running the app.
 
-2. Real-Time Webcam Detection
-bashpython detect_mask_video.py
-or alternatively:
-bashpython webcam_detection.py
-A webcam window will open showing live detection with bounding boxes.
-Press Q to quit.
+Face Detector Caffe Model (required for detect_mask_video.py CLI only)
+The standalone CLI script detect_mask_video.py uses an OpenCV DNN-based SSD face detector. Download these two files and place them in a folder called face_detector/ at the project root:
 
-3. Detect Mask in a Static Image
-bashpython image_upload.py --image path/to/your/image.jpg
-Replace path/to/your/image.jpg with the actual path to an image file on your system.
+mkdir face_detector
 
-4. Run the Main App
-bashpython app.py
+ Running the App
+Make sure your virtual environment is activated ((venv) visible in terminal), then run:
+streamlit run app.py
 
-5. Launch the Analytics Dashboard
-bashpython dashboard.py
+This will start the Streamlit server and automatically open the app in your browser at:
+http://localhost:8501
 
-🔬 Model Training Details
-The classifier is built on top of MobileNetV2 with its top classification head removed. Custom fully-connected layers are appended and trained for binary classification (mask / no mask).
-ParameterValueBase ModelMobileNetV2 (ImageNet weights)OptimizerAdamLoss FunctionBinary Cross-EntropyEpochs20Batch Size32Input Size224 × 224 pxData AugmentationRotation, zoom, horizontal flip, shear
-Face detection before classification is handled by OpenCV's DNN module using a Caffe-based Single Shot Detector (SSD) model.
+Navigating the app
+Use the sidebar to switch between pages:
+PageWhat it does🏠 HomeProject overview, model stats, how-it-works pipeline📷 Live WebcamReal-time mask detection from your camera🖼️ Upload ImageUpload a photo and detect mask / no-mask📊 DashboardTraining curves, dataset distribution, architecture summary
+Press Ctrl+C in the terminal to stop the server.
 
-📊 Results
-MetricValueTraining Accuracy~99%Validation Accuracy~98%Model Parameters~2.4M
-The training curves are saved to plot.png in the project root after training.
+This will:
 
-🐛 Known Issues & Troubleshooting
-ModuleNotFoundError for any package
-→ Make sure your virtual environment is activated and you've run the install step.
+Load and preprocess images from dataset/with_mask/ and dataset/without_mask/
+Apply data augmentation (rotation, zoom, horizontal flip, shear)
+Fine-tune MobileNetV2 with a custom classification head
+Save the trained model to the models/ directory
+Generate a plot.png showing training accuracy and loss curves
+
+Training takes approximately 5–15 minutes depending on your hardware. A GPU is recommended but not required.
+
+🔬 Model Architecture & Results
+Architecture
+The model stacks a custom classification head on top of MobileNetV2 with its top layers removed:
+Input (224 × 224 × 3)
+    ↓
+MobileNetV2 (frozen, ImageNet weights) — feature extraction
+    ↓
+AveragePooling2D (7 × 7)
+    ↓
+Flatten
+    ↓
+Dense(128, activation=ReLU)
+    ↓
+Dropout(0.5)
+    ↓
+Dense(2, activation=Softmax)   →   [With Mask, Without Mask]
+
+<img width="632" height="721" alt="image" src="https://github.com/user-attachments/assets/31b8852b-16a9-4af0-b254-0b315dd9228a" />
+
+Troubleshooting
+ModuleNotFoundError: No module named 'streamlit' (or any other module)
+→ Your virtual environment isn't activated, or you skipped the install step. Run:
+
+source venv/bin/activate   # or venv\Scripts\activate on Windows
+pip install streamlit tensorflow opencv-python numpy matplotlib scikit-learn imutils
+
 FileNotFoundError for deploy.prototxt or .caffemodel
-→ You haven't downloaded the face detector files. Follow the Downloading Required Files section above.
-Webcam not opening / black screen
-→ Check that your webcam is connected and not being used by another application.
-TensorFlow installation issues on Apple Silicon (M1/M2/M3)
-→ Use pip install tensorflow-macos instead of tensorflow.
-No module named 'cv2'
-→ Run pip install opencv-python.
+→ These are only needed for detect_mask_video.py. Follow the Caffe Model download instructions above.
+No model found / app crashes on startup
+→ Either train the model first (python train_mask_detector.py --dataset dataset) or ensure a saved model exists in the models/ folder.
+Webcam page shows a blank or error
+→ Check that your webcam is connected and not in use by another application. On some systems you may need to grant browser camera permissions at http://localhost:8501.
+TensorFlow installation fails on Apple Silicon (M1/M2/M3 Mac)
+→ Use:
+pip install tensorflow-macos
+
+pip install tensorflow is very slow
+→ This is normal — TensorFlow is a large package (~500MB). Wait it out or use a faster internet connection.
 
 👨‍💻 Author
 Ranveer — @RANVEER12082005
 
 📄 License
 This project is open-source and available under the MIT License.
+
+
 
 ---
 
