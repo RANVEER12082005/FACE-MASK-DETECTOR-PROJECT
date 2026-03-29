@@ -55,6 +55,8 @@ Note: A face_detector/ folder with Caffe SSD model files is required for detect_
 The main Streamlit app (app.py) uses OpenCV's Haar Cascade which is bundled with opencv-python and requires no separate download.
 
 
+dataset link - https://www.kaggle.com/datasets/omkargurav/face-mask-dataset
+
 ✅ Prerequisites
 Ensure the following are installed on your machine before proceeding:
 
