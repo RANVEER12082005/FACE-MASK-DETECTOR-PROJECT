@@ -1,0 +1,70 @@
+# ----------------------
+# Python cache files
+# ----------------------
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ----------------------
+# Virtual environment
+# ----------------------
+venv/
+env/
+ENV/
+.venv/
+
+# ----------------------
+# Jupyter Notebook
+# ----------------------
+.ipynb_checkpoints/
+
+# ----------------------
+# System files
+# ----------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------
+# Logs & temp files
+# ----------------------
+*.log
+*.tmp
+
+# ----------------------
+# Model files (optional - keep if large)
+# ----------------------
+models/*.h5
+models/*.pt
+models/*.pth
+
+# ----------------------
+# Dataset (optional - usually large)
+# ----------------------
+dataset/
+
+# ----------------------
+# Output files
+# ----------------------
+*.png
+*.jpg
+*.jpeg
+
+# But keep important plots if needed
+!training_plot.png
+
+# ----------------------
+# VS Code settings
+# ----------------------
+.vscode/
+
+# ----------------------
+# Environment variables
+# ----------------------
+.env
+
+# ----------------------
+# Build files
+# ----------------------
+build/
+dist/
+*.egg-info/
